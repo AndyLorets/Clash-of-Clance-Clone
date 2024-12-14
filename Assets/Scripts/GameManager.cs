@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public int gold;
-
+    public Building buildingTower; 
     public float wood;
     public float food;
     public float stone;
@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
     public int maxMarchQueues = 1; // ћаксимальное количество марш очередей (стартовое значение)
 
     // ƒл€ отслеживани€ улучшений зданий, в будущем можно добавить зависимость улучшений от уровней ратуши
-    public Dictionary<Building.TypeBuilding, int> buildingLevels = new Dictionary<Building.TypeBuilding, int>();
+    public List<int> buildingLevels = new List<int>(); 
     public static GameManager Instance;
     private void Awake()
     {
@@ -39,10 +39,11 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
-        // »нициализаци€ уровней зданий
-        buildingLevels[Building.TypeBuilding.ResourceTypeBuilding] = 0;
-        buildingLevels[Building.TypeBuilding.MilitaryBase] = 0;
-
+        //// »нициализаци€ уровней зданий
+        //buildingLevels[Building.WhatResource.Farm] = 1;
+        //buildingLevels[Building.WhatResource.Quarry] = 1;
+        //buildingLevels[Building.WhatResource.IronMine] = 1;
+        //buildingLevels[Building.WhatResource.Sawmill] = 1;
     }
 
     private void Update()
@@ -57,10 +58,6 @@ public class GameManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && buildingToPlace != null)
         {
             PlaceBuilding();
-        }
-        if(Input.GetMouseButtonDown(1))
-        {
-            UpgradeTownHall();
         }
     }
 
@@ -123,7 +120,8 @@ public class GameManager : MonoBehaviour
             Cursor.visible = false;
 
             buildingToPlace = building;
-
+            buildingToPlace.buildIndex = buildingLevels.Count;
+            buildingLevels.Add(1); 
             // ¬ычитаем ресурсы, после успешной установки здани€
 
         }
@@ -136,16 +134,6 @@ public class GameManager : MonoBehaviour
             Debug.Log("Not enough gold");
             return false;
         }
-        if (building.typeBuilding != Building.TypeBuilding.TownHall)
-        {
-            if (buildingLevels.ContainsKey(building.typeBuilding) && buildingLevels[building.typeBuilding] >= townHallLevel)
-            {
-                Debug.Log("TownHall level is too low");
-                return false;
-            }
-        }
-
-
         if (building.whatResource == Building.WhatResource.Farm && townHallLevel < 1)
         {
             Debug.Log("TownHall need to be 1 level");
@@ -193,11 +181,14 @@ public class GameManager : MonoBehaviour
 
     public void UpgradeTownHall()
     {
+        if (buildingTower.isBuilding) return;
+
         int nextLevel = townHallLevel + 1;
 
         if (nextLevel == 2 && food >= 1400 && wood >= 1400)
         {
-
+            buildingTower.buildTime = 120;
+            buildingTower.isBuilding = true;
             food -= 1400;
             wood -= 1400;
             townHallLevel = nextLevel;
@@ -207,7 +198,8 @@ public class GameManager : MonoBehaviour
         }
         else if (nextLevel == 3 && food >= 2800 && wood >= 2800)
         {
-
+            buildingTower.buildTime = 120;
+            buildingTower.isBuilding = true;
             food -= 2800;
             wood -= 2800;
             townHallLevel = nextLevel;
@@ -216,6 +208,8 @@ public class GameManager : MonoBehaviour
         }
         else if (nextLevel == 4 && food >= 5600 && wood >= 5600 && stone >= 5600)
         {
+            buildingTower.buildTime = 120;
+            buildingTower.isBuilding = true;
             food -= 5600;
             wood -= 5600;
             stone -= 5600;
@@ -225,6 +219,8 @@ public class GameManager : MonoBehaviour
         }
         else if (nextLevel == 5 && food >= 10200 && wood >= 10200 && stone >= 10200)
         {
+            buildingTower.buildTime = 120;
+            buildingTower.isBuilding = true;    
             food -= 10200;
             wood -= 10200;
             stone -= 10200;

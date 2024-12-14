@@ -166,10 +166,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 566149673456944049}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.63, y: 0.03}
-  m_SizeDelta: {x: 5, y: 5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8915974783692248040
 CanvasRenderer:
@@ -262,7 +262,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -0.0125153065, y: 2.0275598, z: 1.201517, w: 1.9900122}
+  m_margin: {x: -0.0125153065, y: 1.2455667, z: 0.0049728747, w: 1.2551272}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -296,7 +296,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1205367388426324009}
@@ -374,21 +374,27 @@ MonoBehaviour:
   FoodLvl1: 0
   WoodLvl1: 200
   StoneLvl1: 0
+  IronLvl1: 0
   FoodLvl2: 0
   WoodLvl2: 400
   StoneLvl2: 0
+  IronLvl2: 0
   FoodLvl3: 0
   WoodLvl3: 800
   StoneLvl3: 0
+  IronLvl3: 0
   FoodLvl4: 0
   WoodLvl4: 1200
   StoneLvl4: 0
+  IronLvl4: 0
   FoodLvl5: 0
   WoodLvl5: 1700
   StoneLvl5: 0
+  IronLvl5: 0
   TakeResource: {fileID: 3801638154810105682}
   levelText: {fileID: 4996883826104064380}
   buildTime: 70
+  isBuilding: 1
   timerText: {fileID: 7805989915159143695}
   freeButton: {fileID: 5882250254307881352}
 --- !u!1 &3760773592977215831
@@ -403,7 +409,7 @@ GameObject:
   - component: {fileID: 305339785633036307}
   - component: {fileID: 7805989915159143695}
   m_Layer: 0
-  m_Name: Text (TMP)
+  m_Name: Timer_text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -423,11 +429,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1205367388426324009}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.61675, y: 1.7900001}
-  m_SizeDelta: {x: 5, y: 5}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0.0027499, y: 1.123}
+  m_SizeDelta: {x: 5, y: 1.123}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &305339785633036307
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -483,13 +489,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.3
-  m_fontSizeBase: 0.3
+  m_fontSize: 0.8
+  m_fontSizeBase: 0.8
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -499,7 +505,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -519,7 +525,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -0.0125153065, y: 2.0275598, z: 1.201517, w: 1.9900122}
+  m_margin: {x: -0.0125153065, y: -0.023739576, z: -0.019776464, w: 0.009855989}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -561,7 +567,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.013249991, y: 3.96}
+  m_AnchoredPosition: {x: -0.013249874, y: 3.96}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2746702375851743580
@@ -704,11 +710,11 @@ RectTransform:
   - {fileID: 2273559394119892628}
   m_Father: {fileID: 1205367388426324009}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.013249991, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0.0027499, y: -1}
+  m_SizeDelta: {x: 3, y: 1}
+  m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &4120665135317786863
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -746,7 +752,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 9.71
 --- !u!114 &1333115498412283036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -834,16 +840,16 @@ RectTransform:
   m_LocalScale: {x: 0.1, y: 0.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3389107946154087119}
-  - {fileID: 566149673456944049}
   - {fileID: 1861369471887921157}
+  - {fileID: 3389107946154087119}
   - {fileID: 8861483981858684804}
+  - {fileID: 566149673456944049}
   m_Father: {fileID: 7969257056891528563}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -0.0027, y: -0.1592}
-  m_SizeDelta: {x: 3.8417, y: 0.9569}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 5, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &4460347896682163609
 Canvas:
@@ -1060,7 +1066,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8861483981858684804
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1076,10 +1082,10 @@ RectTransform:
   - {fileID: 2987511795056729439}
   m_Father: {fileID: 1205367388426324009}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.013249991, y: 2.57}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 3, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7450204718514612322
 CanvasRenderer:
@@ -1118,7 +1124,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 7.95
 --- !u!114 &2575501930957630193
 MonoBehaviour:
   m_ObjectHideFlags: 0

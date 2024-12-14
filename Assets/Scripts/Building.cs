@@ -20,11 +20,14 @@ public class Building : MonoBehaviour
         Farm,
         Quarry,
         Sawmill,
-        IronMine //добавили железный рудник
+        IronMine, //добавили железный рудник
+        TownHall
     }
 
     public TypeBuilding typeBuilding;
     public WhatResource whatResource;
+
+    public int buildIndex; 
 
     public int cost;
     public int goldIncrease;
@@ -58,7 +61,7 @@ public class Building : MonoBehaviour
     // Новые переменные для таймера строительства
     public float buildTime; // Общее время строительства (в секундах)
     private float buildStartTime; // Время начала строительства
-    private bool isBuilding = true; // Флаг строительства
+    public bool isBuilding = true; // Флаг строительства
     private bool canSpeedUp = false; // Возможность ускорения
 
     [SerializeField] private TMP_Text timerText; // Текст таймера
@@ -83,7 +86,7 @@ public class Building : MonoBehaviour
         }
 
         if (typeBuilding != TypeBuilding.TownHall)
-            levelText.text = "Level: " + gm.buildingLevels[typeBuilding].ToString();
+            levelText.text = "Level: " + gm.buildingLevels[buildIndex].ToString();
         else
             levelText.text = $"Level: {gm.townHallLevel}";  
 
@@ -113,7 +116,6 @@ public class Building : MonoBehaviour
                     }
                 }
             }
-
             if (whatResource == WhatResource.Quarry)
             {
                 if (_storedStone < _limitResource)
@@ -130,7 +132,6 @@ public class Building : MonoBehaviour
                     }
                 }
             }
-
             if (whatResource == WhatResource.Sawmill)
             {
                 if (_storedWood < _limitResource)
@@ -256,7 +257,9 @@ public class Building : MonoBehaviour
 
     public void LevelUp()
     {
-        int nextLevel = gm.buildingLevels[typeBuilding] + 1; // Получаем следующий уровень здания
+        if (isBuilding) return; 
+
+        int nextLevel = gm.buildingLevels[buildIndex] + 1; // Получаем следующий уровень здания
 
         if (typeBuilding != TypeBuilding.TownHall)
         {
@@ -288,14 +291,14 @@ public class Building : MonoBehaviour
         }
 
 
-        if (gm.buildingLevels[typeBuilding] == 0 && currentFood >= FoodLvl1 && currentWood >= WoodLvl1 && currentStone >= StoneLvl1 && currentIron >= IronLvl1)
+        if (gm.buildingLevels[buildIndex] == 0 && currentFood >= FoodLvl1 && currentWood >= WoodLvl1 && currentStone >= StoneLvl1 && currentIron >= IronLvl1)
         {
             goldIncrease = 4000;
             timeBetweenIncreases = 1f;
             _limitResource = 20000f;
-            gm.buildingLevels[typeBuilding] = 1; // Обновление уровня в GameManager
+            gm.buildingLevels[buildIndex] = 1; // Обновление уровня в GameManager
             Debug.Log("1 Level");
-
+            isBuilding = true;
             gm.food -= FoodLvl1;
             gm.wood -= WoodLvl1;
             gm.stone -= StoneLvl1;
@@ -303,14 +306,14 @@ public class Building : MonoBehaviour
             buildTime = 140;
             UpdateBuildTimer();
         }
-        else if (gm.buildingLevels[typeBuilding] == 1 && currentFood >= FoodLvl2 && currentWood >= WoodLvl2 && currentStone >= StoneLvl2 && currentIron >= IronLvl2)
+        else if (gm.buildingLevels[buildIndex] == 1 && currentFood >= FoodLvl2 && currentWood >= WoodLvl2 && currentStone >= StoneLvl2 && currentIron >= IronLvl2)
         {
             goldIncrease = 510;
             timeBetweenIncreases = 1f;
             _limitResource = 25500f;
-            gm.buildingLevels[typeBuilding] = 2;
+            gm.buildingLevels[buildIndex] = 2;
             Debug.Log("2 Level");
-
+            isBuilding = true;
             gm.food -= FoodLvl2;
             gm.wood -= WoodLvl2;
             gm.stone -= StoneLvl2;
@@ -318,14 +321,14 @@ public class Building : MonoBehaviour
             buildTime = 320;
             UpdateBuildTimer();
         }
-        else if (gm.buildingLevels[typeBuilding] == 2 && currentFood >= FoodLvl3 && currentWood >= WoodLvl3 && currentStone >= StoneLvl3 && currentIron >= IronLvl3)
+        else if (gm.buildingLevels[buildIndex] == 2 && currentFood >= FoodLvl3 && currentWood >= WoodLvl3 && currentStone >= StoneLvl3 && currentIron >= IronLvl3)
         {
             goldIncrease = 630;
             timeBetweenIncreases = 1f;
             _limitResource = 31500f;
-            gm.buildingLevels[typeBuilding] = 3;
+            gm.buildingLevels[buildIndex] = 3;
             Debug.Log("3 Level");
-
+            isBuilding = true;
             gm.food -= FoodLvl3;
             gm.wood -= WoodLvl3;
             gm.stone -= StoneLvl3;
@@ -333,14 +336,14 @@ public class Building : MonoBehaviour
             buildTime = 560;
             UpdateBuildTimer();
         }
-        else if (gm.buildingLevels[typeBuilding] == 3 && currentFood >= FoodLvl4 && currentWood >= WoodLvl4 && currentStone >= StoneLvl4 && currentIron >= IronLvl4)
+        else if (gm.buildingLevels[buildIndex] == 3 && currentFood >= FoodLvl4 && currentWood >= WoodLvl4 && currentStone >= StoneLvl4 && currentIron >= IronLvl4)
         {
             goldIncrease = 760;
             timeBetweenIncreases = 1f;
             _limitResource = 38000f;
-            gm.buildingLevels[typeBuilding] = 4;
+            gm.buildingLevels[buildIndex] = 4;
             Debug.Log("4 Level");
-
+            isBuilding = true;
             gm.food -= FoodLvl4;
             gm.wood -= WoodLvl4;
             gm.stone -= StoneLvl4;
@@ -348,14 +351,14 @@ public class Building : MonoBehaviour
             buildTime = 1120;
             UpdateBuildTimer();
         }
-        else if (gm.buildingLevels[typeBuilding] == 4 && currentFood >= FoodLvl5 && currentWood >= WoodLvl5 && currentStone >= StoneLvl5 && currentIron >= IronLvl5)
+        else if (gm.buildingLevels[buildIndex] == 4 && currentFood >= FoodLvl5 && currentWood >= WoodLvl5 && currentStone >= StoneLvl5 && currentIron >= IronLvl5)
         {
             goldIncrease = 900;
             timeBetweenIncreases = 1f;
             _limitResource = 45000f;
-            gm.buildingLevels[typeBuilding] = 5;
+            gm.buildingLevels[buildIndex] = 5;
             Debug.Log("5 Level");
-
+            isBuilding = true;
             gm.food -= FoodLvl5;
             gm.wood -= WoodLvl5;
             gm.stone -= StoneLvl5;

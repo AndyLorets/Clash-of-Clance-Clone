@@ -82,8 +82,10 @@ public class Building : MonoBehaviour
             UpdateBuildTimer();
         }
 
-
-        levelText.text = "Level: " + gm.buildingLevels[typeBuilding].ToString();
+        if (typeBuilding != TypeBuilding.TownHall)
+            levelText.text = "Level: " + gm.buildingLevels[typeBuilding].ToString();
+        else
+            levelText.text = $"Level: {gm.townHallLevel}";  
 
         currentFood = gm.food;
         currentWood = gm.wood;
@@ -254,6 +256,38 @@ public class Building : MonoBehaviour
 
     public void LevelUp()
     {
+        int nextLevel = gm.buildingLevels[typeBuilding] + 1; // Получаем следующий уровень здания
+
+        if (typeBuilding != TypeBuilding.TownHall)
+        {
+            if (nextLevel == 1 && gm.townHallLevel < 1)
+            {
+                Debug.Log("TownHall level is too low for building level up");
+                return;
+            }
+            if (nextLevel == 2 && gm.townHallLevel < 2)
+            {
+                Debug.Log("TownHall level is too low for building level up");
+                return;
+            }
+            if (nextLevel == 3 && gm.townHallLevel < 3)
+            {
+                Debug.Log("TownHall level is too low for building level up");
+                return;
+            }
+            if (nextLevel == 4 && gm.townHallLevel < 4)
+            {
+                Debug.Log("TownHall level is too low for building level up");
+                return;
+            }
+            if (nextLevel == 5 && gm.townHallLevel < 5)
+            {
+                Debug.Log("TownHall level is too low for building level up");
+                return;
+            }
+        }
+
+
         if (gm.buildingLevels[typeBuilding] == 0 && currentFood >= FoodLvl1 && currentWood >= WoodLvl1 && currentStone >= StoneLvl1 && currentIron >= IronLvl1)
         {
             goldIncrease = 4000;

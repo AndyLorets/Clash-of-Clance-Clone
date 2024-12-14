@@ -29,7 +29,14 @@ public class GameManager : MonoBehaviour
 
     // Для отслеживания улучшений зданий, в будущем можно добавить зависимость улучшений от уровней ратуши
     public Dictionary<Building.TypeBuilding, int> buildingLevels = new Dictionary<Building.TypeBuilding, int>();
-
+    public static GameManager Instance;
+    private void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject); 
+    }
     private void Start()
     {
         // Инициализация уровней зданий

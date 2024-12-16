@@ -1,10 +1,30 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 
+[System.Serializable]
+public class BaseProporty
+{
+    public float buildTime; 
+}
+[System.Serializable]
+public class ResourceProporty
+{
+    public float limitResource;
+    public int increase;
+}
+[System.Serializable]
+public class PriceProporty
+{
+    public float foot;
+    public float wood;
+    public float stone;
+    public float iron;
+}
 public class Building : MonoBehaviour
 {
+    private BaseProporty CurrentBaseProporty => baseProporties[CurrentLevel]; 
+    private PriceProporty CurrentPriceProporty => _priceProporty[CurrentLevel]; 
+    private ResourceProporty CurrentResourceLevel => resourceLevelProporty[CurrentLevel]; 
     public enum TypeBuilding
     {
         ResourceTypeBuilding,
@@ -12,72 +32,61 @@ public class Building : MonoBehaviour
         Sawmill,
         MilitaryBase,
         Barracks,
-        TownHall //Добавили ратушу
+        TownHall 
     }
-
     public enum WhatResource
     {
         Farm,
         Quarry,
         Sawmill,
-        IronMine, //добавили железный рудник
+        IronMine,
         TownHall
     }
 
     public TypeBuilding typeBuilding;
     public WhatResource whatResource;
 
-    public int buildIndex; 
-
+    public int buildIndex;
+    private int CurrentLevel => gm.buildingLevels[buildIndex] - 1; 
     public int cost;
-    public int goldIncrease;
+
     public float timeBetweenIncreases;
     private float nextIncreaseTime;
 
     private GameManager gm;
-
-    [SerializeField] private float FoodLvl1, WoodLvl1, StoneLvl1, IronLvl1;
-    [SerializeField] private float FoodLvl2, WoodLvl2, StoneLvl2, IronLvl2;
-    [SerializeField] private float FoodLvl3, WoodLvl3, StoneLvl3, IronLvl3;
-    [SerializeField] private float FoodLvl4, WoodLvl4, StoneLvl4, IronLvl4;
-    [SerializeField] private float FoodLvl5, WoodLvl5, StoneLvl5, IronLvl5;
-
-    [SerializeField] private GameObject TakeResource;
 
     private float currentFood;
     private float currentWood;
     private float currentStone;
     private float currentIron;
 
-    [SerializeField] private TMP_Text levelText;
+    [SerializeField] private float _storedFood = 0f;
+    [SerializeField] private float _storedStone = 0f;
+    [SerializeField] private float _storedWood = 0f;
+    [SerializeField] private float _storedIron = 0f;
 
-    private float _storedFood = 0f;
-    private float _storedStone = 0f;
-    private float _storedWood = 0f;
-    private float _storedIron = 0f;
-
-    private float _limitResource;
-
-    // Новые переменные для таймера строительства
-    public float buildTime; // Общее время строительства (в секундах)
     private float buildStartTime; // Время начала строительства
     public bool isBuilding = true; // Флаг строительства
     private bool canSpeedUp = false; // Возможность ускорения
 
+    [SerializeField] private TMP_Text levelText;
+    [SerializeField] private GameObject TakeResource;
     [SerializeField] private TMP_Text timerText; // Текст таймера
     [SerializeField] private GameObject freeButton; // Кнопка "Бесплатно"
+    [Space(5)]
+    [SerializeField] private BaseProporty[] baseProporties; 
+    [SerializeField] private ResourceProporty[] resourceLevelProporty;
+    [SerializeField] private PriceProporty[] _priceProporty;
 
     private void Start()
     {
         gm = FindObjectOfType<GameManager>();
-        TakeResource.SetActive(false);
 
         // Инициализация строительства
         buildStartTime = Time.time;
-        isBuilding = true;
         freeButton.SetActive(false); // Кнопка скрыта изначально
+        nextIncreaseTime = Time.time + timeBetweenIncreases;
     }
-
     private void Update()
     {
         if (isBuilding)
@@ -102,80 +111,80 @@ public class Building : MonoBehaviour
             // Накопление ресурсов
             if (whatResource == WhatResource.Farm)
             {
-                if (_storedFood < _limitResource)
+                float limitResource = resourceLevelProporty[CurrentLevel].limitResource; 
+                if (_storedFood < limitResource)
                 {
-                    _storedFood += goldIncrease;
-                    if (_storedFood > _limitResource)
+                    _storedFood += CurrentResourceLevel.increase;
+                    if (_storedFood > limitResource)
                     {
-                        _storedFood = _limitResource; // Ограничение лимитом
+                        _storedFood = limitResource; 
                     }
 
-                    if (_storedFood == _limitResource)
-                    {
-                        TakeResource.SetActive(true);
-                    }
+                    TakeResource.SetActive(true);
                 }
             }
             if (whatResource == WhatResource.Quarry)
             {
-                if (_storedStone < _limitResource)
+                if (_storedStone < CurrentResourceLevel.limitResource)
                 {
-                    _storedStone += goldIncrease;
-                    if (_storedStone > _limitResource)
+                    _storedStone += CurrentResourceLevel.increase;
+                    if (_storedStone > CurrentResourceLevel.limitResource)
                     {
-                        _storedStone = _limitResource; // ограничение лимитом
+                        _storedStone = CurrentResourceLevel.limitResource; // ограничение лимитом
                     }
 
-                    if (_storedStone == _limitResource)
+                    if (_storedStone == CurrentResourceLevel.limitResource)
                     {
-                        TakeResource.SetActive(true);
+
                     }
+                    TakeResource.SetActive(true);
                 }
             }
             if (whatResource == WhatResource.Sawmill)
             {
-                if (_storedWood < _limitResource)
+                if (_storedWood < CurrentResourceLevel.limitResource)
                 {
-                    _storedWood += goldIncrease;
-                    if (_storedWood > _limitResource)
+                    _storedWood += CurrentResourceLevel.increase;
+                    if (_storedWood > CurrentResourceLevel.limitResource)
                     {
-                        _storedWood = _limitResource; // Ограничение лимитом
+                        _storedWood = CurrentResourceLevel.limitResource; // Ограничение лимитом
                     }
 
-                    if (_storedWood == _limitResource)
+                    if (_storedWood == CurrentResourceLevel.limitResource)
                     {
-                        TakeResource.SetActive(true);
+
                     }
+                    TakeResource.SetActive(true);
                 }
             }
             if (whatResource == WhatResource.IronMine)
             {
-                if (_storedIron < _limitResource)
+                if (_storedIron < CurrentResourceLevel.limitResource)
                 {
-                    _storedIron += goldIncrease;
-                    if (_storedIron > _limitResource)
+                    _storedIron += CurrentResourceLevel.increase;
+                    if (_storedIron > CurrentResourceLevel.limitResource)
                     {
-                        _storedIron = _limitResource; // Ограничение лимитом
+                        _storedIron = CurrentResourceLevel.limitResource; // Ограничение лимитом
                     }
 
-                    if (_storedIron == _limitResource)
+                    if (_storedIron == CurrentResourceLevel.limitResource)
                     {
-                        TakeResource.SetActive(true);
+      
                     }
+                    TakeResource.SetActive(true);
                 }
             }
         }
     }
-
+    private bool _firstUpgradeAdded; 
     private void UpdateBuildTimer()
     {
         float elapsedTime = Time.time - buildStartTime;
-        float remainingTime = buildTime - elapsedTime;
+        float remainingTime = CurrentBaseProporty.buildTime - elapsedTime;
 
         if (remainingTime > 0)
         {
-            // Обновляем текст таймера
-            timerText.text = $"Time Left: {FormatTime(remainingTime)}";
+            timerText.text = $"{FormatTime(remainingTime)}";
 
             // Если оставшееся время ≤ 5 минут (300 секунд), показываем кнопку "Бесплатно"
             if (remainingTime <= 300f && !freeButton.activeSelf)
@@ -189,21 +198,23 @@ public class Building : MonoBehaviour
             FinishBuilding();
         }
     }
-
     private string FormatTime(float timeInSeconds)
     {
         int minutes = Mathf.FloorToInt(timeInSeconds / 60);
         int seconds = Mathf.FloorToInt(timeInSeconds % 60);
         return $"{minutes:D2}:{seconds:D2}";
     }
-
     private void FinishBuilding()
     {
         isBuilding = false;
-        timerText.text = "Building Complete!";
+        timerText.text = "";
         freeButton.SetActive(false);
-    }
 
+        if (TypeBuilding.TownHall == typeBuilding)
+            gm.townHallLevel++;
+        else if (_firstUpgradeAdded)
+            gm.buildingLevels[buildIndex] += 1;
+    }
     public void SpeedUpBuilding()
     {
         if (canSpeedUp)
@@ -211,7 +222,6 @@ public class Building : MonoBehaviour
             FinishBuilding();
         }
     }
-
     public void CollectResourcesFood()
     {
         // Передача накопленных ресурсов в GameManager
@@ -222,7 +232,6 @@ public class Building : MonoBehaviour
             Debug.Log("Collected food: " + gm.food);
         }
     }
-
     public void CollectResourcesStone()
     {
         // Передача накопленных ресурсов в GameManager
@@ -233,7 +242,6 @@ public class Building : MonoBehaviour
             Debug.Log("Collected stone: " + gm.stone);
         }
     }
-
     public void CollectResourcesWood()
     {
         // Передача накопленных ресурсов в GameManager
@@ -289,81 +297,21 @@ public class Building : MonoBehaviour
                 return;
             }
         }
+        else if(gm.townHallLevel == 5)
+        {
+            return; 
+        }
 
-
-        if (gm.buildingLevels[buildIndex] == 0 && currentFood >= FoodLvl1 && currentWood >= WoodLvl1 && currentStone >= StoneLvl1 && currentIron >= IronLvl1)
+        bool canBuy = currentFood >= CurrentPriceProporty.foot 
+            && currentWood >= CurrentPriceProporty.wood && currentStone >= CurrentPriceProporty.stone && currentIron >= CurrentPriceProporty.iron; 
+        if (canBuy)
         {
-            goldIncrease = 4000;
-            timeBetweenIncreases = 1f;
-            _limitResource = 20000f;
-            gm.buildingLevels[buildIndex] = 1; // Обновление уровня в GameManager
-            Debug.Log("1 Level");
             isBuilding = true;
-            gm.food -= FoodLvl1;
-            gm.wood -= WoodLvl1;
-            gm.stone -= StoneLvl1;
-            gm.iron -= IronLvl1;
-            buildTime = 140;
-            UpdateBuildTimer();
-        }
-        else if (gm.buildingLevels[buildIndex] == 1 && currentFood >= FoodLvl2 && currentWood >= WoodLvl2 && currentStone >= StoneLvl2 && currentIron >= IronLvl2)
-        {
-            goldIncrease = 510;
-            timeBetweenIncreases = 1f;
-            _limitResource = 25500f;
-            gm.buildingLevels[buildIndex] = 2;
-            Debug.Log("2 Level");
-            isBuilding = true;
-            gm.food -= FoodLvl2;
-            gm.wood -= WoodLvl2;
-            gm.stone -= StoneLvl2;
-            gm.iron -= IronLvl2;
-            buildTime = 320;
-            UpdateBuildTimer();
-        }
-        else if (gm.buildingLevels[buildIndex] == 2 && currentFood >= FoodLvl3 && currentWood >= WoodLvl3 && currentStone >= StoneLvl3 && currentIron >= IronLvl3)
-        {
-            goldIncrease = 630;
-            timeBetweenIncreases = 1f;
-            _limitResource = 31500f;
-            gm.buildingLevels[buildIndex] = 3;
-            Debug.Log("3 Level");
-            isBuilding = true;
-            gm.food -= FoodLvl3;
-            gm.wood -= WoodLvl3;
-            gm.stone -= StoneLvl3;
-            gm.iron -= IronLvl3;
-            buildTime = 560;
-            UpdateBuildTimer();
-        }
-        else if (gm.buildingLevels[buildIndex] == 3 && currentFood >= FoodLvl4 && currentWood >= WoodLvl4 && currentStone >= StoneLvl4 && currentIron >= IronLvl4)
-        {
-            goldIncrease = 760;
-            timeBetweenIncreases = 1f;
-            _limitResource = 38000f;
-            gm.buildingLevels[buildIndex] = 4;
-            Debug.Log("4 Level");
-            isBuilding = true;
-            gm.food -= FoodLvl4;
-            gm.wood -= WoodLvl4;
-            gm.stone -= StoneLvl4;
-            gm.iron -= IronLvl4;
-            buildTime = 1120;
-            UpdateBuildTimer();
-        }
-        else if (gm.buildingLevels[buildIndex] == 4 && currentFood >= FoodLvl5 && currentWood >= WoodLvl5 && currentStone >= StoneLvl5 && currentIron >= IronLvl5)
-        {
-            goldIncrease = 900;
-            timeBetweenIncreases = 1f;
-            _limitResource = 45000f;
-            gm.buildingLevels[buildIndex] = 5;
-            Debug.Log("5 Level");
-            isBuilding = true;
-            gm.food -= FoodLvl5;
-            gm.wood -= WoodLvl5;
-            gm.stone -= StoneLvl5;
-            gm.iron -= IronLvl5;
-            UpdateBuildTimer();
+            _firstUpgradeAdded = true;
+            gm.food -= CurrentPriceProporty.foot;
+            gm.wood -= CurrentPriceProporty.wood;
+            gm.stone -= CurrentPriceProporty.stone;
+            gm.iron -= CurrentPriceProporty.iron;
         }
         else
         {

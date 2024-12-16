@@ -5,23 +5,24 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private Building buildingTown;
     public int gold;
-    public Building buildingTower; 
     public float wood;
     public float food;
     public float stone;
-    public float iron; // Добавлено железо
+    public float iron; 
 
     public Text goldDisplay;
     public Text foodDisplay;
     public Text woodDisplay;
     public Text stoneDisplay;
-    public Text ironDisplay; // Добавлено для железа
+    public Text ironDisplay; 
 
     private Building buildingToPlace;
 
     public CustomCursor customCursor;
     public Tile[] tiles;
+    private float buildTime;
 
     // Уровень ратуши
     public int townHallLevel = 1;
@@ -35,7 +36,10 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
             Instance = this;
         else
-            Destroy(gameObject); 
+            Destroy(gameObject);
+
+        buildingLevels.Add(1);
+        buildingTown.buildIndex = 0;
     }
     private void Start()
     {
@@ -60,8 +64,6 @@ public class GameManager : MonoBehaviour
             PlaceBuilding();
         }
     }
-
-
     private void PlaceBuilding()
     {
         Tile nearestTile = null;
@@ -93,7 +95,6 @@ public class GameManager : MonoBehaviour
 
         }
     }
-
     private bool CanPlaceBuildingOnTile(Tile tile)
     {
 
@@ -110,7 +111,6 @@ public class GameManager : MonoBehaviour
             return false;
         }
     }
-
     public void BuyBuilding(Building building)
     {
         if (CanBuyBuilding(building))
@@ -179,59 +179,58 @@ public class GameManager : MonoBehaviour
         return true;
     }
 
-    public void UpgradeTownHall()
-    {
-        if (buildingTower.isBuilding) return;
+    //public void UpgradeTownHall()
+    //{
+    //    if (buildingTower.isBuilding) return;
 
-        int nextLevel = townHallLevel + 1;
+    //    int nextLevel = townHallLevel + 1;
 
-        if (nextLevel == 2 && food >= 1400 && wood >= 1400)
-        {
-            buildingTower.buildTime = 120;
-            buildingTower.isBuilding = true;
-            food -= 1400;
-            wood -= 1400;
-            townHallLevel = nextLevel;
-            maxMarchQueues = 1;
+    //    if (nextLevel == 2 && food >= 1400 && wood >= 1400)
+    //    {
+    //        buildTime = 120;
+    //        buildingTower.isBuilding = true;
+    //        food -= 1400;
+    //        wood -= 1400;
+    //        townHallLevel = nextLevel;
+    //        maxMarchQueues = 1;
 
-            Debug.Log("Town Hall upgraded to level " + townHallLevel);
-        }
-        else if (nextLevel == 3 && food >= 2800 && wood >= 2800)
-        {
-            buildingTower.buildTime = 120;
-            buildingTower.isBuilding = true;
-            food -= 2800;
-            wood -= 2800;
-            townHallLevel = nextLevel;
-            maxMarchQueues = 1;
-            Debug.Log("Town Hall upgraded to level " + townHallLevel);
-        }
-        else if (nextLevel == 4 && food >= 5600 && wood >= 5600 && stone >= 5600)
-        {
-            buildingTower.buildTime = 120;
-            buildingTower.isBuilding = true;
-            food -= 5600;
-            wood -= 5600;
-            stone -= 5600;
-            townHallLevel = nextLevel;
-            maxMarchQueues = 1;
-            Debug.Log("Town Hall upgraded to level " + townHallLevel);
-        }
-        else if (nextLevel == 5 && food >= 10200 && wood >= 10200 && stone >= 10200)
-        {
-            buildingTower.buildTime = 120;
-            buildingTower.isBuilding = true;    
-            food -= 10200;
-            wood -= 10200;
-            stone -= 10200;
-            townHallLevel = nextLevel;
-            maxMarchQueues = 2;
-            Debug.Log("Town Hall upgraded to level " + townHallLevel);
-        }
-
-        else
-        {
-            Debug.Log("Not enought resourses");
-        }
-    }
+    //        Debug.Log("Town Hall upgraded to level " + townHallLevel);
+    //    }
+    //    else if (nextLevel == 3 && food >= 2800 && wood >= 2800)
+    //    {
+    //        buildTime = 120;
+    //        buildingTower.isBuilding = true;
+    //        food -= 2800;
+    //        wood -= 2800;
+    //        townHallLevel = nextLevel;
+    //        maxMarchQueues = 1;
+    //        Debug.Log("Town Hall upgraded to level " + townHallLevel);
+    //    }
+    //    else if (nextLevel == 4 && food >= 5600 && wood >= 5600 && stone >= 5600)
+    //    {
+    //        buildTime = 120;
+    //        buildingTower.isBuilding = true;
+    //        food -= 5600;
+    //        wood -= 5600;
+    //        stone -= 5600;
+    //        townHallLevel = nextLevel;
+    //        maxMarchQueues = 1;
+    //        Debug.Log("Town Hall upgraded to level " + townHallLevel);
+    //    }
+    //    else if (nextLevel == 5 && food >= 10200 && wood >= 10200 && stone >= 10200)
+    //    {
+    //        buildTime = 120;
+    //        buildingTower.isBuilding = true;    
+    //        food -= 10200;
+    //        wood -= 10200;
+    //        stone -= 10200;
+    //        townHallLevel = nextLevel;
+    //        maxMarchQueues = 2;
+    //        Debug.Log("Town Hall upgraded to level " + townHallLevel);
+    //    }
+    //    else
+    //    {
+    //        Debug.Log("Not enought resourses");
+    //    }
+    //}
 }
